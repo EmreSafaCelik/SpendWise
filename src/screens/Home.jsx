@@ -7,7 +7,7 @@ const Home = () => {
 
     return (
         <Text>
-            Home Screen
+            Efe'nin Bilgisayardan değişiklik
         </Text>
     )
 }
