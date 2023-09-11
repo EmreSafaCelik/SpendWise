@@ -7,7 +7,7 @@ const Home = () => {
 
     return (
         <Text>
-            Efe'nin Bilgisayardan değişiklik
+            Efe'nin Bilgisayardan değişiklik2
         </Text>
     )
 }
