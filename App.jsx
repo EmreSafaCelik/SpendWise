@@ -1,10 +1,10 @@
 import React from 'react';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {NavigationContainer} from '@react-navigation/native'
 
 import Login from './src/screens/Login';
-
-import {NavigationContainer} from '@react-navigation/native'
+import Home from './src/screens/Home';
 
 const Stack = createNativeStackNavigator()
 const App = () => {
@@ -15,6 +15,13 @@ const App = () => {
         <Stack.Screen
           name='login'
           component={Login}
+          options={{
+            headerShown: false
+          }}
+        />
+        <Stack.Screen
+          name='home'
+          component={Home}
           options={{
             headerShown: false
           }}

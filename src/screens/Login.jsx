@@ -13,7 +13,21 @@ import Logo from '../assets/icons/Logo';
 import UsernameIcon from '../assets/icons/Username';
 import PasswordIcon from '../assets/icons/Password';
 
-const Login = () => {
+const LOGIN_URL = "https://dummyjson.com/auth/login"
+
+const Login = props => {
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+
+    const requestOptions = {
+        method: 'POST',
+        url: LOGIN_URL,
+        headers: { 'Content-Type': 'application/json' },
+        data: {
+            username: username,
+            password: password,
+        }
+    }
 
     return (
         <View style={styles.container} >
@@ -28,6 +42,8 @@ const Login = () => {
                     <TextInput
                         style={styles.input}
                         placeholder='username'
+                        onChangeText={setUsername}
+                        value={username}
                     />
                 </View>
 
@@ -36,11 +52,29 @@ const Login = () => {
                     <TextInput
                         style={styles.input}
                         placeholder='password'
+                        onChangeText={setPassword}
+                        value={password}
                     />
                 </View>
             </View>
 
-            <TouchableOpacity style={styles.btn}>
+            <TouchableOpacity 
+                style={styles.btn}
+                onPress={async () => {
+                    try {
+                        const response = await axios.request(requestOptions);
+                        console.log(response.data)
+                        if (response.data.token) {
+                            console.log('Token received')
+                            props.navigation.navigate('home')
+                        } else {
+                            console.log('No token')
+                        }
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }}
+            >
                 <Text style={styles.btnTxt}>Giriş Yap</Text>
             </TouchableOpacity>
         </View>
