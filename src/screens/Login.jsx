@@ -16,8 +16,8 @@ import PasswordIcon from '../assets/icons/Password';
 const LOGIN_URL = "https://dummyjson.com/auth/login"
 
 const Login = props => {
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
+    const [username, setUsername] = useState('atuny0')
+    const [password, setPassword] = useState('9uQFF1Lh')
 
     const requestOptions = {
         method: 'POST',
