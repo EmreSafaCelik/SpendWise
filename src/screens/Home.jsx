@@ -70,8 +70,10 @@ const Home = ({navigation, route}) => {
     })
 
     useEffect(() => {
-        console.log(route.params);
-        if (route?.params?.category.length > 0) {
+        console.log('route.params: ', route.params);
+        if (route?.params?.index >= 0) {
+            setExpenses([...expenses.slice(0, route.params.index), route.params.expense, ...expenses.slice(route.params.index + 1)])
+        } else if (route?.params?.category.length > 0) {
             setExpenses([route.params, ...expenses])
         }
     }, [route.params])
@@ -135,11 +137,19 @@ const Home = ({navigation, route}) => {
                 renderItem={element => {
 
                     return (
-                        <View style={styles.expenseRow}>
+                        <TouchableOpacity 
+                            style={styles.expenseRow}
+                            onPress={() => {
+                                navigation.navigate('newExpense', {
+                                    expense: element.item,
+                                    index: element.index
+                                })
+                            }}
+                        >
                             <Text style={styles.expenseTxt}>{element?.item?.category}</Text>
                             <Text style={styles.expenseTxt}>{element?.item?.amount}</Text>
                             <Text style={styles.expenseTxt}>{element?.item?.date}</Text>
-                        </View>
+                        </TouchableOpacity>
                     )
                 }}
             />

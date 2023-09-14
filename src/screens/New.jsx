@@ -11,11 +11,12 @@ import CategoryIcon from '../assets/icons/Category'
 import AmountIcon from '../assets/icons/Amount'
 import DateIcon from '../assets/icons/Date'
 
-const NewExpense = ({navigation}) => {
-    const [category, setCategory] = useState('Benzin')
-    const [amount, setAmount] = useState('')
-    const [date, setDate] = useState(`${String(new Date().getDate()).padStart(2, '0')}.${String(new Date().getMonth() + 1).padStart(2, '0')}.${new Date().getFullYear()}`)
+const NewExpense = ({navigation, route}) => {
+    const [category, setCategory] = useState(route?.params?.expense ? route.params.expense.category : 'Benzin')
+    const [amount, setAmount] = useState(route?.params?.expense ? route.params.expense.amount : '')
+    const [date, setDate] = useState(route?.params?.expense ? route.params.expense.date : `${String(new Date().getDate()).padStart(2, '0')}.${String(new Date().getMonth() + 1).padStart(2, '0')}.${new Date().getFullYear()}`)
 
+    console.log('route.params - newExpense: ', route.params)
     return (
         <View style={styles.container}>
             <View>
@@ -93,7 +94,16 @@ const NewExpense = ({navigation}) => {
             <TouchableOpacity 
                 style={styles.btn}
                 onPress={() => {
-                    if (category.length > 0 && amount.length > 0 && date.length > 0) {
+                    if (route?.params?.index >= 0) {
+                        navigation.navigate('home', {
+                            expense: {
+                                category: category,
+                                amount: amount,
+                                date: date,
+                            },
+                            index: route.params.index
+                        })
+                    } else if (category.length > 0 && amount.length > 0 && date.length > 0) {
                         navigation.navigate('home', {
                             category: category,
                             amount: amount,
