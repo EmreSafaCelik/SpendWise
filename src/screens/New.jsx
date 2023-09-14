@@ -93,14 +93,16 @@ const NewExpense = ({navigation}) => {
             <TouchableOpacity 
                 style={styles.btn}
                 onPress={() => {
-                    navigation.navigate('home', {
-                        category: category,
-                        amount: amount,
-                        date: date
-                    })
+                    if (category.length > 0 && amount.length > 0 && date.length > 0) {
+                        navigation.navigate('home', {
+                            category: category,
+                            amount: amount,
+                            date: date
+                        })
+                    }
                 }}
                 >
-                <Text style={styles.btnTxt}>Kaydet"</Text>
+                <Text style={styles.btnTxt}>Kaydet</Text>
             </TouchableOpacity>
         </View>
     )
@@ -127,7 +129,7 @@ const styles = StyleSheet.create({
     passiveCategoryTxt: {
         color: 'black',
         fontSize: 24,
-        fontweight: '500',
+        fontWeight: '500',
     },
     activeCategoryBtn: {
         width: 358,
@@ -141,7 +143,7 @@ const styles = StyleSheet.create({
     activeCategoryTxt: {
         color: 'white',
         fontSize: 24,
-        fontweight: '500',
+        fontWeight: '500',
     },
     singularInputContainer: {
         borderRadius: 12,

@@ -13,11 +13,17 @@ import Logo from '../assets/icons/Logo';
 import UsernameIcon from '../assets/icons/Username';
 import PasswordIcon from '../assets/icons/Password';
 
+// import { MMKVLoader } from "react-native-mmkv-storage";
+
+// const MMKV = new MMKVLoader().initialize()
+
 const LOGIN_URL = "https://dummyjson.com/auth/login"
 
 const Login = props => {
     const [username, setUsername] = useState('atuny0')
     const [password, setPassword] = useState('9uQFF1Lh')
+
+    // MMKV.clearStore()
 
     const requestOptions = {
         method: 'POST',

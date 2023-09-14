@@ -7,13 +7,18 @@ import {
     TouchableOpacity,
 } from 'react-native'
 
-const Home = ({navigation, route}) => {
+import { MMKVLoader, useMMKVStorage } from "react-native-mmkv-storage";
 
-    const [expenses, setExpenses] = useState([])
+const MMKV = new MMKVLoader().initialize()
+
+const Home = ({navigation, route}) => {
+    const [expenses, setExpenses] = useMMKVStorage('harcamalar', MMKV, [])
 
     useEffect(() => {
         console.log(route.params);
-        setExpenses([...expenses, route.params])
+        if (route?.params?.category.length > 0) {
+            setExpenses([route.params, ...expenses])
+        }
     }, [route.params])
 
     return (
@@ -39,9 +44,9 @@ const Home = ({navigation, route}) => {
 
                     return (
                         <View style={styles.expenseRow}>
-                            <Text style={styles.expenseTxt}>{element.item.category}</Text>
-                            <Text style={styles.expenseTxt}>{element.item.amount}</Text>
-                            <Text style={styles.expenseTxt}>{element.item.date}</Text>
+                            <Text style={styles.expenseTxt}>{element?.item?.category}</Text>
+                            <Text style={styles.expenseTxt}>{element?.item?.amount}</Text>
+                            <Text style={styles.expenseTxt}>{element?.item?.date}</Text>
                         </View>
                     )
                 }}
