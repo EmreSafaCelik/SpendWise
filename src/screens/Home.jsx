@@ -22,6 +22,42 @@ function isInCurrentMonth(date) {
     return result
 }
 
+function isInPreviousMonth(date) {
+    const now = new Date()
+    const prevMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1)
+    const result = prevMonth.getMonth() === date.getMonth() && prevMonth.getFullYear() === date.getFullYear()
+    return result;
+}
+
+function isInCurrentWeek(date) {
+    const now = new Date()
+    const startOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay() + 1)
+    const endOfWeek = new Date(startOfWeek.getFullYear(), startOfWeek.getMonth(), startOfWeek.getDate() + 6)
+    const result = date >= startOfWeek && date <= endOfWeek
+    return result
+}
+
+function isInPreviousWeek(date) {
+    const now = new Date()
+    const startOfPrevWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay() - 6)
+    const endOfPrevWeek = new Date(startOfPrevWeek.getFullYear(), startOfPrevWeek.getMonth(), startOfPrevWeek.getDate() + 6)
+    const result = date >= startOfPrevWeek && date <= endOfPrevWeek
+    return result
+}
+
+function isInCurrentDay(date) {
+    const now = new Date()
+    const result = now.toDateString() === date.toDateString()
+    return result
+}
+
+function isInPreviousDay(date) {
+    const now = new Date()
+    const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1)
+    const result = yesterday.toDateString() === date.toDateString()
+    return result
+}
+
 const Home = ({navigation, route}) => {
     const [expenses, setExpenses] = useMMKVStorage('harcamalar', MMKV, [])
     const [summary, setSummary] = useState({
@@ -55,6 +91,21 @@ const Home = ({navigation, route}) => {
                 const date = stringToDate(harcama.date)
                 if (isInCurrentMonth(date)) {
                     newSummary.currentMonth += Number(harcama.amount)
+                }
+                if (isInPreviousMonth(date)) {
+                    newSummary.previousMonth += Number(harcama.amount)
+                }
+                if (isInCurrentWeek(date)) {
+                    newSummary.currentWeek += Number(harcama.amount)
+                }
+                if (isInPreviousWeek(date)) {
+                    newSummary.previousWeek += Number(harcama.amount)
+                }
+                if (isInCurrentDay(date)) {
+                    newSummary.currentDay += Number(harcama.amount)
+                }
+                if (isInPreviousDay(date)) {
+                    newSummary.previousDay += Number(harcama.amount)
                 }
             })
 
