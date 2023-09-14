@@ -11,8 +11,27 @@ import { MMKVLoader, useMMKVStorage } from "react-native-mmkv-storage";
 
 const MMKV = new MMKVLoader().initialize()
 
+function stringToDate(dateString) {
+    const [day, month, year] = dateString.split('.')
+    return new Date(year, month - 1, day)
+}
+
+function isInCurrentMonth(date) {
+    const now = new Date();
+    const result = now.getMonth() === date.getMonth() && now.getFullYear() === date.getFullYear()
+    return result
+}
+
 const Home = ({navigation, route}) => {
     const [expenses, setExpenses] = useMMKVStorage('harcamalar', MMKV, [])
+    const [summary, setSummary] = useState({
+        currentMonth: 0,
+        previousMonth: 0,
+        currentWeek: 0,
+        previousWeek: 0,
+        currentDay: 0,
+        previousDay: 0,
+    })
 
     useEffect(() => {
         console.log(route.params);
@@ -21,19 +40,41 @@ const Home = ({navigation, route}) => {
         }
     }, [route.params])
 
+    useEffect(() => {
+        if (expenses.length > 0) {
+            let newSummary = {
+                currentMonth: 0,
+                previousMonth: 0,
+                currentWeek: 0,
+                previousWeek: 0,
+                currentDay: 0,
+                previousDay: 0,
+            }
+
+            expenses.forEach(harcama => {
+                const date = stringToDate(harcama.date)
+                if (isInCurrentMonth(date)) {
+                    newSummary.currentMonth += Number(harcama.amount)
+                }
+            })
+
+            setSummary(newSummary)
+        }
+    }, [expenses])
+
     return (
         <View style={styles.container}>
             <View style={styles.summary}>
                 <View style={styles.summaryColumnContainer}>
-                    <Text style={styles.summaryTxt}>{'BU AY:\n0'} TL</Text>
-                    <Text style={styles.summaryTxt}>{'BU HAFTA:\n0'} TL</Text>
-                    <Text style={styles.summaryTxt}>{'BUGÜN:\n0'} TL</Text>
+                    <Text style={styles.summaryTxt}>{'BU AY:\n'}{summary.currentMonth} TL</Text>
+                    <Text style={styles.summaryTxt}>{'BU HAFTA:\n'}{summary.currentWeek} TL</Text>
+                    <Text style={styles.summaryTxt}>{'BUGÜN:\n'}{summary.currentDay} TL</Text>
                 </View>
 
                 <View style={styles.summaryColumnContainer}>
-                    <Text style={styles.summaryTxt}>{'GEÇEN AY:\n0'} TL</Text>
-                    <Text style={styles.summaryTxt}>{'GEÇEN HAFTA:\n0'} TL</Text>
-                    <Text style={styles.summaryTxt}>{'DÜN:\n0'} TL</Text>
+                    <Text style={styles.summaryTxt}>{'GEÇEN AY:\n'}{summary.previousMonth} TL</Text>
+                    <Text style={styles.summaryTxt}>{'GEÇEN HAFTA:\n'}{summary.previousWeek} TL</Text>
+                    <Text style={styles.summaryTxt}>{'DÜN:\n'}{summary.previousDay} TL</Text>
                 </View>
             </View>
 
